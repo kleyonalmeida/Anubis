@@ -1,30 +1,4 @@
 ```
-                    .-@W=                                             
-                    #WWWW-                                            
-                    *WWWWW*-.                              -++-       
-            :       -WWWWWWW%.                           .#WW%-       
-            **:     .WWWWWWWW%.                          +WWW=        
-            :WW#-    *WWWWWWWW*                          :%WW:        
-           .-#WWW#=.  %WWWWWW=#.                          .*@*-..     
-          -@WWWWWWWW#:=WWWWWW: .                            .-++**+.  
-       .-#WWWWWWWWWWWW%WWWWWW%--..                 .....         :*@: 
-     .+WWWWWWWWWWWWWWWWWWWWWWWWWWW#*=-:::....-=+*#%@WW%#*+-.       @* 
-      .=#%###++*%WWWWWWWWWWWWWWWWWWWWWWWW@@@WWWWWWWWWW@*==*#*-:::=##. 
-                .-*WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW*..-++*++-   
- ..    .-+==-+#%+. =WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW%:          
- =W@@@%WWWWWWWWW%%%@WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW@:         
- .+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW%@WWWWWWWWWWWWWW@:        
-   .:..+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW%::%WWWWW@+%WWWWWWW+:      
-     .:@WWWW@#*#%@@WWWWWWWWWWWWWWWWWWWWWWW%.   =%WWWW+ .-+*%@WWW%.    
-    .*W%+:...     ..::=#WWWWWWWWWWWWWWWWWW#     .=%WWW*     .=@WW*    
-     .:                *WWW##=#%%@@@#+@WWW:       .@WW*       -WWW:   
-                     .#WW%- .  .....  @WW*         %WW:        +WW*   
-                    :%WW=            -WW@.         #WW.        .@W@.  
-                 ..+WW%=             #WW*       .:-@W#         =WW@.  
-               +@@WWW+            .-*WWW-       *@W@#.       :%WWW*   
-               :=+=-.            .#@WWW*.       ....         .:-::    
-                                  ..:-.                               
-
     ___              __   _      
    /   |  ____  __ __/ /_ (_)____
   / /| | / __ \/ / / / __ \/ / __/
