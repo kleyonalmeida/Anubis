@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Anubis CLI Wrapper - High-Performance OSINT & Security Engine
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# If published native AOT binary exists, run it for 5ms instant execution; otherwise fallback to dotnet run
+NATIVE_BIN="$SCRIPT_DIR/Presentation.CLI/bin/Release/net10.0/linux-x64/publish/Presentation.CLI"
+
+if [ -f "$NATIVE_BIN" ]; then
+    exec "$NATIVE_BIN" "$@"
+else
+    exec dotnet run --project "$SCRIPT_DIR/Presentation.CLI" -- "$@"
+fi

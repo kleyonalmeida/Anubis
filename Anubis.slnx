@@ -1,11 +1,9 @@
 <Solution>
-  <Folder Name="/src/">
-    <Project Path="src/Anubis.Application/Anubis.Application.csproj" />
-    <Project Path="src/Anubis.Domain/Anubis.Domain.csproj" />
-    <Project Path="src/Anubis.Infrastructure/Anubis.Infrastructure.csproj" />
-    <Project Path="src/Anubis.Presentation.CLI/Anubis.Presentation.CLI.csproj" />
-  </Folder>
+  <Project Path="Application/Application.csproj" />
+  <Project Path="Domain/Domain.csproj" />
+  <Project Path="Infrastructure/Infrastructure.csproj" />
+  <Project Path="Presentation.CLI/Presentation.CLI.csproj" />
   <Folder Name="/tests/">
-    <Project Path="tests/Anubis.Tests/Anubis.Tests.csproj" />
+    <Project Path="tests/Tests/Tests.csproj" />
   </Folder>
 </Solution>
