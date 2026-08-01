@@ -1,7 +1,7 @@
 import os
 import json
 
-CONFIG_PATH = os.path.expanduser("~/cerberus/config/settings.json")
+CONFIG_PATH = os.path.expanduser("~/anubis/config/settings.json")
 
 DEFAULT_CONFIG = {
     "author": "lohjs-0",

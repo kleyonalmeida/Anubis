@@ -25,26 +25,26 @@
                :=+=-.            .#@WWW*.       ....         .:-::    
                                   ..:-.                               
 
-    ___          _                         
-  / __\___ _ __| |__   ___ _ __ _   _ ___ 
- / /  / _ \ '__| '_ \ / _ \ '__| | | / __|
-/ /__|  __/ |  | |_) |  __/ |  | |_| \__ \
-\____/\___|_|  |_.__/ \___|_|   \__,_|___/
+    ___              __   _      
+   /   |  ____  __ __/ /_ (_)____
+  / /| | / __ \/ / / / __ \/ / __/
+ / ___ |/ / / / /_/ / /_/ / /\__ \ 
+/_/  |_/_/ /_/\__,_/_.___/_/____/ 
 
         OSINT & SECURITY ANALYSIS — v1.3.0
 ```
 
-> Use Cerberus only on systems you own or have explicit permission to test. Unauthorized scanning is illegal.
+> Use Anubis only on systems you own or have explicit permission to test. Unauthorized scanning is illegal.
 
 ---
 
-## What is Cerberus?
+## What is Anubis?
 
-Cerberus is a modular OSINT, recon, and security analysis tool built in Python.
+Anubis is a modular OSINT, recon, and security analysis tool built in Python.
 
 Inspired by the three-headed guardian of the underworld, it watches a target from three angles simultaneously — **OSINT**, **RECON**, and **SECURITY** — and delivers a final judgment on exposure risk.
 
-Most tools dump raw data. Cerberus turns that data into intelligence: it interprets findings, explains their impact, maps the attack surface visually, tracks exposure over time, and scores the target across three dimensions before issuing a verdict.
+Most tools dump raw data. Anubis turns that data into intelligence: it interprets findings, explains their impact, maps the attack surface visually, tracks exposure over time, and scores the target across three dimensions before issuing a verdict.
 
 ---
 
@@ -60,7 +60,7 @@ When you run **CHAIN RITUAL (12)**, all three heads analyze the target in sequen
 
 ```
 ======================================
-         CERBERUS  JUDGMENT
+          ANUBIS  JUDGMENT
 ======================================
 
 HEAD I   (OSINT)     [####..............] 20/100
@@ -88,18 +88,18 @@ Verdicts scale with risk: `SOUL IS CLEAN` → `MINOR SINS` → `WATCH CLOSELY` �
 ## Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/lohjs-0/cerberus-osint/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/lohjs-0/anubis-osint/main/install.sh | bash
 ```
 
 ## Run
 
 ```bash
-cerberus
+anubis
 ```
 
-> **Note:** The installer places Cerberus in `~/.cerberus/` and creates the `cerberus` command in `~/.local/bin/`. If the command is not found after install, run it directly:
+> **Note:** The installer places Anubis in `~/.anubis-osint/` and creates the `anubis` command in `~/.local/bin/`. If the command is not found after install, run it directly:
 > ```bash
-> cd ~/.cerberus && python3 cerberus.py
+> cd ~/.anubis-osint/anubis && python3 anubis.py
 > ```
 
 ---
@@ -115,12 +115,12 @@ sudo apt update && sudo apt install -y python3-pip
 bash install.sh
 ```
 
-### `cerberus: command not found`
+### `anubis: command not found`
 
 `~/.local/bin` may not be in your `PATH`. Either run directly:
 
 ```bash
-cd ~/.cerberus && python3 cerberus.py
+cd ~/.anubis-osint/anubis && python3 anubis.py
 ```
 
 Or add it to your PATH permanently:
@@ -129,22 +129,22 @@ Or add it to your PATH permanently:
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc && source ~/.bashrc
 ```
 
-### `can't open file '/path/to/cerberus.py'`
+### `can't open file '/path/to/anubis.py'`
 
-You're running `python3 cerberus.py` from the wrong directory. The installer puts the files in `~/.cerberus/`, not the folder you cloned manually. Navigate there first:
+You're running `python3 anubis.py` from the wrong directory. The installer puts the files in `~/.anubis-osint/`, not the folder you cloned manually. Navigate there first:
 
 ```bash
-cd ~/.cerberus && python3 cerberus.py
+cd ~/.anubis-osint/anubis && python3 anubis.py
 ```
 
 ### WSL / Windows users
 
-If you're running Cerberus under WSL, make sure you're working inside the Linux filesystem (`~`) and not a Windows path (`/mnt/c/...`). Running from `/mnt/c/` can cause permission and path resolution issues.
+If you're running Anubis under WSL, make sure you're working inside the Linux filesystem (`~`) and not a Windows path (`/mnt/c/...`). Running from `/mnt/c/` can cause permission and path resolution issues.
 
 ```bash
 # Recommended: copy to Linux home first
-cp -r /mnt/c/Users/<you>/cerberus ~/.cerberus
-cd ~/.cerberus && python3 cerberus.py
+cp -r /mnt/c/Users/<you>/anubis ~/.anubis-osint
+cd ~/.anubis-osint/anubis && python3 anubis.py
 ```
 
 ---
@@ -364,7 +364,7 @@ example.com
 
 Serve locally:
 ```bash
-cd ~/cerberus/reports && python -m http.server 8080
+cd ~/anubis/reports && python -m http.server 8080
 ```
 
 ---
@@ -448,8 +448,8 @@ pip install requests[socks] python-whois
 ## Project Structure
 
 ```
-cerberus/
-|-- cerberus.py            # Main entrypoint — menu, chain ritual, scoring
+anubis/
+|-- anubis.py              # Main entrypoint — menu, chain ritual, scoring
 |-- README.md
 |-- core/
 |   |-- utils.py           # Colors, helpers, progress, quotes
@@ -476,4 +476,4 @@ The author is not responsible for misuse.
 
 ---
 
-**github.com/lohjs-0/cerberu-osint**
+**github.com/lohjs-0/anubis-osint**

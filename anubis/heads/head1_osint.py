@@ -227,7 +227,7 @@ def email_lookup():
     try:
         r = requests.get(
             "https://leakcheck.io/api/public?check=" + email,
-            timeout=8, headers={"User-Agent": "Cerberus-OSINT"}, proxies=get_proxies()
+            timeout=8, headers={"User-Agent": "Anubis-OSINT"}, proxies=get_proxies()
         )
         data = r.json()
         if data.get("success"):

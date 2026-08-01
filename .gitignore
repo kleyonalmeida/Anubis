@@ -1,0 +1,53 @@
+# .NET / Visual Studio
+bin/
+obj/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+*.user
+*.userhost
+*.pdb
+*.cache
+*.g.cs
+*.g.i.cs
+
+# NuGet
+*.nuget.props
+*.nuget.targets
+*.nuget.dgspec.json
+project.lock.json
+project.assets.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.dll
+
+# Virtual environments
+venv/
+env/
+ENV/
+.env
+.venv
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDEs / Editors
+.vscode/
+.idea/
+.vs/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

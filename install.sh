@@ -10,10 +10,10 @@ W='\033[1;37m'
 BL='\033[5m'
 X='\033[0m'
 
-REPO="https://github.com/lohjs-0/cerberus-osint.git"
-INSTALL_DIR="$HOME/.cerberus-osint"
+REPO="https://github.com/lohjs-0/anubis-osint.git"
+INSTALL_DIR="$HOME/.anubis-osint"
 BIN_DIR="$HOME/.local/bin"
-CMD="cerberus"
+CMD="anubis"
 
 type_out() {
     local text="$1"
@@ -134,11 +134,11 @@ sleep 0.3
 
 echo ""
 TITLE_LINES=(
-"    ___          _                         "
-"  / __\\___ _ __| |__   ___ _ __ _   _ ___ "
-" / /  / _ \\ '__| '_ \\ / _ \\ '__| | | / __|"
-"/ /__|  __/ |  | |_) |  __/ |  | |_| \\__ \\"
-"\\____/\\___|_|  |_.__/ \\___|_|   \\__,_|___/ "
+"    ___              __   _      "
+"   /   |  ____  __ __/ /_ (_)____"
+"  / /| | / __ \\/ / / / __ \\/ / __/"
+" / ___ |/ / / / /_/ / /_/ / /\\__ \\ "
+"/_/  |_/_/ /_/\\__,_/_.___/_/____/ "
 )
 
 for line in "${TITLE_LINES[@]}"; do
@@ -151,7 +151,7 @@ sleep 0.4
 echo ""
 flicker "  ══════════════════════════════════════"
 sleep 0.1
-flicker "  THREE HEADS.  ONE JUDGMENT.  NO MERCY."
+flicker "  THE JUDGE OF THE DEAD.  NO MERCY."
 sleep 0.1
 flicker "  ══════════════════════════════════════"
 echo ""
@@ -223,7 +223,7 @@ sleep 0.3
 progress_bar "cloning" 1.8
 
 if [ -d "$INSTALL_DIR/.git" ]; then
-    echo -e "${Y}  [~] cerberus already prowls here. updating...${X}"
+    echo -e "${Y}  [~] anubis already prowls here. updating...${X}"
     git -C "$INSTALL_DIR" pull --quiet
 else
     git clone --quiet "$REPO" "$INSTALL_DIR"
@@ -274,7 +274,7 @@ mkdir -p "$BIN_DIR"
 
 cat > "$BIN_DIR/$CMD" << CMDEOF
 #!/usr/bin/env bash
-cd "$INSTALL_DIR" && python3 cerberus.py "\$@"
+cd "$INSTALL_DIR/anubis" && python3 anubis.py "\$@"
 CMDEOF
 
 chmod +x "$BIN_DIR/$CMD"
@@ -295,7 +295,7 @@ echo ""
 
 type_out "  the ritual is complete." 0.05 "$DR"
 sleep 0.5
-type_out "  cerberus is bound to your machine." 0.04 "$R"
+type_out "  anubis is bound to your machine." 0.04 "$R"
 sleep 0.4
 
 echo ""
@@ -318,27 +318,27 @@ echo ""
 flicker "  ══════════════════════════════════════"
 sleep 0.05
 
-echo -e "${BR}${BL}           ⚠  CERBERUS IS ALIVE  ⚠          ${X}"
+echo -e "${BR}${BL}           ⚠  ANUBIS IS ALIVE  ⚠          ${X}"
 
 flicker "  ══════════════════════════════════════"
 echo ""
 sleep 0.3
 
-echo -e "${G}  [✓] installed  ${D}→  ${R}cerberus${X}"
+echo -e "${G}  [✓] installed  ${D}→  ${R}anubis${X}"
 echo -e "${G}  [✓] version    ${D}→  ${R}v1.3.0${X}"
 echo -e "${G}  [✓] location   ${D}→  ${D}${INSTALL_DIR}${X}"
 echo ""
 echo -e "${DR}  ──────────────────────────────────────${X}"
 echo ""
-echo -e "${D}  run: ${R}cerberus${X}"
+echo -e "${D}  run: ${R}anubis${X}"
 echo ""
 echo -e "${DR}  use only on authorized targets.${X}"
 echo -e "${DR}  all souls pass through here.${X}"
 echo ""
 
-if ! command -v cerberus &>/dev/null; then
-    echo -e "${Y}  [!] if 'cerberus' is not found yet, run:${X}"
+if ! command -v anubis &>/dev/null; then
+    echo -e "${Y}  [!] if 'anubis' is not found yet, run:${X}"
     echo -e "${D}      source ~/${SHELL_RC##*/}${X}"
-    echo -e "${D}      or: cd ${INSTALL_DIR} && python3 cerberus.py${X}"
+    echo -e "${D}      or: cd ${INSTALL_DIR}/anubis && python3 anubis.py${X}"
     echo ""
 fi

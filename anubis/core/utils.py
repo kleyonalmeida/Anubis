@@ -48,10 +48,10 @@ def set_tor(enabled):
 def is_tor():
     return TOR_MODE
 
-def get_input(prompt="[CERBERUS]---> "):
+def get_input(prompt="[ANUBIS]---> "):
     return input(R + prompt + X).strip().lower()
 
-def cerberus_say(msg, delay=0.04):
+def anubis_say(msg, delay=0.04):
     for ch in msg:
         sys.stdout.write(ch)
         sys.stdout.flush()

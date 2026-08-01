@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Anubis.Application/Anubis.Application.csproj" />
+    <Project Path="src/Anubis.Domain/Anubis.Domain.csproj" />
+    <Project Path="src/Anubis.Infrastructure/Anubis.Infrastructure.csproj" />
+    <Project Path="src/Anubis.Presentation.CLI/Anubis.Presentation.CLI.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Anubis.Tests/Anubis.Tests.csproj" />
+  </Folder>
+</Solution>

@@ -13,14 +13,14 @@ import datetime
 import subprocess
 import requests
 
-from core.utils import R, D, G, Y, C, X, get_headers, get_proxies, set_tor, is_tor, get_input, progress, head_wake, head_done, cerberus_say, QUOTES
+from core.utils import R, D, G, Y, C, X, get_headers, get_proxies, set_tor, is_tor, get_input, progress, head_wake, head_done, anubis_say, QUOTES
 from core.config import config_load, config_save, configure
 from core.grimoire import grimoire_salvar, grimoire_listar, limpar_logs, export_html, export_markdown
 from heads.head1_osint import soul_search, correlate, email_lookup
 from heads.head2_recon import domain_curse, ip_recon, hellscan, ssl_checker, tech_fingerprint, subdomain_finder
 from heads.head3_security import vulnscan, cve_lookup, paste_monitor, shodan_search, cloud_scan, phone_osint
 
-LOG_DIR = os.path.expanduser("~/cerberus/logs")
+LOG_DIR = os.path.expanduser("~/anubis/logs")
 
 ART = r"""                                                       
                     .-@W=                                             
@@ -50,17 +50,17 @@ ART = r"""
                                   ..:-.                               
 """
 
-TITLE = r"""    ___          _                         
-  / __\___ _ __| |__   ___ _ __ _   _ ___ 
- / /  / _ \ '__| '_ \ / _ \ '__| | | / __|
-/ /__|  __/ |  | |_) |  __/ |  | |_| \__ \
-\____/\___|_|  |_.__/ \___|_|   \__,_|___/
-                                          """
+TITLE = r"""    ___              __   _      
+   /   |  ____  __ __/ /_ (_)____
+  / /| | / __ \/ / / / __ \/ / __/
+ / ___ |/ / / / /_/ / /_/ / /\__ \ 
+/_/  |_/_/ /_/\__,_/_.___/_/____/ 
+                                  """
 
 INFO_BOX = r"""+-------------------------------------------+
-| [!] CERBERUS: OSINT & SECURITY ANALYSIS  |
+| [!] ANUBIS: OSINT & SECURITY ANALYSIS   |
 +-------------------------------------------+
-| Cerberus is a modular OSINT, recon, and   |
+| Anubis is a modular OSINT, recon, and    |
 | security analysis tool built in Python.   |
 |                                           |
 | It watches a target from three angles:    |
@@ -68,7 +68,7 @@ INFO_BOX = r"""+-------------------------------------------+
 |   -> RECON                                |
 |   -> SECURITY                             |
 |                                           |
-| Cerberus turns raw data into intelligence |
+| Anubis turns raw data into intelligence  |
 | and scores the target across three        |
 | dimensions before issuing a verdict.      |
 +-------------------------------------------+"""
@@ -105,8 +105,8 @@ def show_banner():
         print(f"{left_part:<{max_left_width + 4}}{art_part}")
     print(X)
 
-    print(D + "  [+] VERSION  : Cerberus-1.3.0" + X)
-    print(D + "  [+] GITHUB   : github.com/lohjs-0/cerberus" + X)
+    print(D + "  [+] VERSION  : Anubis-1.3.0" + X)
+    print(D + "  [+] GITHUB   : github.com/lohjs-0/anubis" + X)
     print(D + "  [+] QUOTE    : " + random.choice(QUOTES) + X)
     print()
     print(R + "  [========================================]" + X)
@@ -198,7 +198,7 @@ def judgment(osint_score, recon_score, sec_score, findings):
 
     print()
     print(R + "  ======================================" + X)
-    print(R + "         CERBERUS  JUDGMENT             " + X)
+    print(R + "         ANUBIS  JUDGMENT                " + X)
     print(R + "  ======================================" + X)
     print()
     print(D + "  HEAD I   (OSINT)     " + X + R + bar(osint_score) + X)
@@ -233,7 +233,7 @@ def chain_ritual(target):
 
     print()
     print(R + "  ======================================" + X)
-    cerberus_say(R + "  [CERBERUS] The gates open for: " + target + X)
+    anubis_say(R + "  [ANUBIS] The gates open for: " + target + X)
     print(R + "  ======================================" + X)
     print()
     time.sleep(0.5)
@@ -300,7 +300,7 @@ def chain_ritual(target):
             findings.append(str(medium_vulns) + " MEDIUM severity issue(s) found")
 
     progress("CVE LOOKUP", 1.5, head=3)
-    cerberus_say(D + "  [HEAD III] Searching the book of sins..." + X)
+    anubis_say(D + "  [HEAD III] Searching the book of sins..." + X)
     try:
         r = requests.get(
             "https://services.nvd.nist.gov/rest/json/cves/2.0",
@@ -441,7 +441,7 @@ def tor_control():
 
 def dashboard():
     os.system("cls" if os.name == "nt" else "clear")
-    print(R + "  === CERBERUS DASHBOARD ===" + X + "\n")
+    print(R + "  === ANUBIS DASHBOARD ===" + X + "\n")
     if not os.path.exists(LOG_DIR):
         print(D + "  No data yet. Run CHAIN RITUAL first." + X + "\n")
         return
@@ -637,7 +637,7 @@ def export_graph():
     import json as _json
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     label     = filter_target if filter_target else "all"
-    out       = os.path.expanduser("~/cerberus/reports/graph_" + label + "_" + timestamp + ".html")
+    out       = os.path.expanduser("~/anubis/reports/graph_" + label + "_" + timestamp + ".html")
     os.makedirs(os.path.dirname(out), exist_ok=True)
 
     legend = [
@@ -653,13 +653,13 @@ def export_graph():
     legend_html = ""
     for grp, cor, nome_l in legend:
         legend_html += f'<div class="li"><span style="background:{cor}"></span>{nome_l}</div>'
-      
-html = """<!DOCTYPE html>
+
+    html = """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CERBERUS GRAPH</title>
+<title>ANUBIS GRAPH</title>
 <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
@@ -793,7 +793,7 @@ body {
 <body>
 
 <div id="hd">
-  <h1>&#9760; CERBERUS GRAPH &nbsp;<small>""" + (filter_target or "ALL TARGETS") + """</small></h1>
+  <h1>&#9760; ANUBIS GRAPH &nbsp;<small>""" + (filter_target or "ALL TARGETS") + """</small></h1>
   <p>""" + str(len(nodes)) + """ nodes &nbsp;·&nbsp; """ + str(len(edges)) + """ edges &nbsp;·&nbsp; """ + timestamp + """</p>
 </div>
 
@@ -887,7 +887,7 @@ document.getElementById("search").addEventListener("keydown", function(e) {
         f.write(html)
     print(G + "  Graph generated!" + X)
     print(R + "  File: " + X + out)
-    print(D + "  Serve: cd ~/cerberus/reports && python -m http.server 8080" + X + "\n")
+    print(D + "  Serve: cd ~/anubis/reports && python -m http.server 8080" + X + "\n")
 
 
 # VISUALIZE MENU
@@ -929,7 +929,7 @@ def main():
 
     while True:
         if not target:
-            print(R + "\n  [CERBERUS] Define your target first." + X)
+            print(R + "\n  [ANUBIS] Define your target first." + X)
             target = input(R + "  Target: " + X).strip()
             if not target:
                 continue
