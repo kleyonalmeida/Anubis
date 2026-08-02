@@ -31,18 +31,30 @@ public static class TechFingerprintCommand
             {
                 var techResult = await techService.ScanAsync(domain, cts.Token);
                 
-                if (techResult != null && techResult.TechnologiesDetected.Count > 0)
+                if (techResult != null)
                 {
                     AnubisConsole.LogInfo($"Target: {techResult.TargetUrl}");
-                    foreach (var tech in techResult.TechnologiesDetected)
+
+                    if (techResult.TechnologiesDetected.Count > 0)
                     {
-                        AnubisConsole.LogSuccess($"[Tech] {tech}");
+                        foreach (var tech in techResult.TechnologiesDetected)
+                        {
+                            AnubisConsole.LogSuccess($"[Tech] {tech}");
+                        }
+                        AnubisConsole.LogInfo("Tech Fingerprint completed.");
                     }
-                    AnubisConsole.LogInfo("Tech Fingerprint completed.");
+                    else if (!string.IsNullOrEmpty(techResult.ErrorMessage))
+                    {
+                        AnubisConsole.LogError($"Tech Fingerprint connection failed: {techResult.ErrorMessage}");
+                    }
+                    else
+                    {
+                        AnubisConsole.LogWarning("Tech Fingerprint yielded no matching signatures.");
+                    }
                 }
                 else
                 {
-                    AnubisConsole.LogWarning("Tech Fingerprint yielded no results.");
+                    AnubisConsole.LogWarning("Tech Fingerprint yielded no response.");
                 }
             }
             catch (Exception ex)

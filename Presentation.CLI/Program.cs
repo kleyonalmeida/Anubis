@@ -43,7 +43,12 @@ class Program
         services.AddHttpClient("TechClient").ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
         {
             PooledConnectionLifetime = TimeSpan.FromMinutes(2),
-            AllowAutoRedirect = true
+            AllowAutoRedirect = true,
+            EnableMultipleHttp2Connections = true,
+            SslOptions = new System.Net.Security.SslClientAuthenticationOptions
+            {
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
+            }
         });
 
         services.AddHttpClient("VulnScanClient").ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler

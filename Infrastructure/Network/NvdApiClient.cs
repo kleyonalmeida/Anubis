@@ -28,7 +28,25 @@ public class NvdApiClient : INvdApiClient
     public async Task<IReadOnlyList<CveResult>> GetVulnerabilitiesByKeywordAsync(string keyword, CancellationToken cancellationToken = default)
     {
         var url = $"{BaseUrl}?keywordSearch={Uri.EscapeDataString(keyword)}&resultsPerPage=10";
-        return await SendAndParseAsync(url, cancellationToken);
+        var results = await SendAndParseAsync(url, cancellationToken);
+
+        if (results.Count > 0) return results;
+
+        // Se a busca com string completa (ex: "nginx 1.24.0") não retornar resultados,
+        // extrair a palavra base/nome do produto (ex: "nginx") e tentar novamente na API NVD.
+        var spaceIndex = keyword.Trim().IndexOf(' ');
+        if (spaceIndex > 0)
+        {
+            var baseProduct = keyword.Substring(0, spaceIndex).Trim();
+            if (!string.IsNullOrWhiteSpace(baseProduct) && baseProduct.Length > 2)
+            {
+                _logger.LogInformation("No direct results for '{Keyword}'. Trying fallback search for product: '{BaseProduct}'", keyword, baseProduct);
+                var fallbackUrl = $"{BaseUrl}?keywordSearch={Uri.EscapeDataString(baseProduct)}&resultsPerPage=10";
+                return await SendAndParseAsync(fallbackUrl, cancellationToken);
+            }
+        }
+
+        return results;
     }
 
     public async Task<CveResult?> GetVulnerabilityByIdAsync(string cveId, CancellationToken cancellationToken = default)
@@ -41,25 +59,29 @@ public class NvdApiClient : INvdApiClient
     private async Task<IReadOnlyList<CveResult>> SendAndParseAsync(string url, CancellationToken cancellationToken)
     {
         var client = _httpClientFactory.CreateClient("NvdClient");
-        client.Timeout = TimeSpan.FromSeconds(15);
-        client.DefaultRequestHeaders.Add("User-Agent", "Anubis-Sec/1.0");
 
         try
         {
-            var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            cts.CancelAfter(TimeSpan.FromSeconds(30));
+
+            using var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.TryAddWithoutValidation("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Anubis-Sec/1.0");
+
+            var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token);
             if (!response.IsSuccessStatusCode)
             {
                 _logger.LogWarning("NVD API returned non-success status code: {StatusCode}", response.StatusCode);
                 return Array.Empty<CveResult>();
             }
 
-            using var contentStream = await response.Content.ReadAsStreamAsync(cancellationToken);
+            using var contentStream = await response.Content.ReadAsStreamAsync(cts.Token);
             
             // Native AOT Deserialization using Source Generators
             var nvdResponse = await JsonSerializer.DeserializeAsync(
                 contentStream, 
                 NvdJsonContext.Default.NvdResponse, 
-                cancellationToken
+                cts.Token
             );
 
             if (nvdResponse?.Vulnerabilities == null || nvdResponse.Vulnerabilities.Count == 0)
@@ -109,9 +131,9 @@ public class NvdApiClient : INvdApiClient
 
             return results;
         }
-        catch (Exception ex) when (ex is not OperationCanceledException)
+        catch (Exception ex) when (!cancellationToken.IsCancellationRequested)
         {
-            _logger.LogError(ex, "Error fetching from NVD API.");
+            _logger.LogWarning("NVD API request failed: {Message}", ex.Message);
             return Array.Empty<CveResult>();
         }
     }
