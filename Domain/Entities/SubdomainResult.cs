@@ -9,5 +9,6 @@ public record SubdomainResult(
     bool HttpsOk,
     string Title,
     string Tech,
-    string Asn
+    string Asn,
+    long ContentLength = 0
 );

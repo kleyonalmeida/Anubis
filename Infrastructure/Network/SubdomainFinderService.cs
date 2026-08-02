@@ -38,6 +38,16 @@ public class SubdomainFinderService : ISubdomainFinderService
         IEnumerable<string> wordlist, 
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
+        // 1. Perform Wildcard / Catch-all Baseline Fingerprinting
+        var wildcardProbeHost = $"anubis-wildcard-check-{Guid.NewGuid().ToString("N")[..8]}.{targetDomain.Value}";
+        var wildcardResult = await CheckSubdomainAsync(wildcardProbeHost, cancellationToken);
+        
+        bool isWildcardActive = wildcardResult != null;
+        if (isWildcardActive)
+        {
+            _logger.LogWarning("Wildcard/Catch-all DNS or HTTP response detected on target {Domain}. Filtering default responses.", targetDomain.Value);
+        }
+
         var channel = Channel.CreateBounded<SubdomainResult>(new BoundedChannelOptions(_options.MaxDegreeOfParallelism * 2)
         {
             SingleWriter = false,
@@ -59,8 +69,27 @@ public class SubdomainFinderService : ISubdomainFinderService
                 {
                     var host = $"{word}.{targetDomain.Value}";
                     var result = await CheckSubdomainAsync(host, ct);
+                    
                     if (result != null)
                     {
+                        // If wildcard catch-all is active, check if this result is identical to the baseline catch-all response
+                        if (isWildcardActive && wildcardResult != null)
+                        {
+                            bool isSameStatusAndTitle = 
+                                result.StatusCode == wildcardResult.StatusCode &&
+                                result.Title == wildcardResult.Title &&
+                                result.Tech == wildcardResult.Tech;
+
+                            // Allow small variance (+- 50 bytes) in content length for dynamic tokens/CSRF, but filter if identical baseline
+                            bool isSameContentLength = Math.Abs(result.ContentLength - wildcardResult.ContentLength) < 50;
+
+                            if (isSameStatusAndTitle && isSameContentLength)
+                            {
+                                // Ignore catch-all false positive
+                                return;
+                            }
+                        }
+
                         await channel.Writer.WriteAsync(result, ct);
                     }
                 });
@@ -96,13 +125,18 @@ public class SubdomainFinderService : ISubdomainFinderService
             if (dnsResponse == null || dnsResponse.Status != 0 || dnsResponse.Answer == null || dnsResponse.Answer.Length == 0)
                 return null;
 
-            var ip = dnsResponse.Answer[0].Data;
+            var ipAnswer = dnsResponse.Answer.FirstOrDefault(a => System.Net.IPAddress.TryParse(a.Data, out _));
+            if (ipAnswer == null)
+                return null;
+
+            var ip = ipAnswer.Data;
             
             int statusCode = 0;
             bool httpsOk = false;
             string title = "-";
             string tech = "-";
 
+            long contentLength = 0;
             var probeClient = _httpClientFactory.CreateClient("ProbeClient");
             var schemes = new[] { "https", "http" };
             
@@ -110,12 +144,13 @@ public class SubdomainFinderService : ISubdomainFinderService
             {
                 try
                 {
-                    var response = await probeClient.GetAsync($"{scheme}://{host}/", HttpCompletionOption.ResponseHeadersRead, ct);
+                    var response = await probeClient.GetAsync($"{scheme}://{host}/", HttpCompletionOption.ResponseContentRead, ct);
                     statusCode = (int)response.StatusCode;
                     httpsOk = scheme == "https";
 
                     tech = ExtractTechHeaders(response);
                     title = await ExtractTitleZeroAllocationAsync(response, ct);
+                    contentLength = response.Content.Headers.ContentLength ?? (await response.Content.ReadAsByteArrayAsync(ct)).Length;
                     break;
                 }
                 catch
@@ -150,12 +185,12 @@ public class SubdomainFinderService : ISubdomainFinderService
                 httpsOk,
                 title,
                 tech,
-                asn
+                asn,
+                contentLength
             );
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"DEBUG ERROR {host}: {ex}");
             _logger.LogError(ex, $"Error checking subdomain {host}");
             return null;
         }

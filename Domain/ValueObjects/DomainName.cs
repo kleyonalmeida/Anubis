@@ -16,7 +16,16 @@ public readonly record struct DomainName
         if (string.IsNullOrWhiteSpace(domain))
             throw new ArgumentException("Domain cannot be null or empty", nameof(domain));
             
-        return new DomainName(domain.Trim().ToLowerInvariant());
+        var cleaned = domain.Trim().ToLowerInvariant();
+        if (cleaned.StartsWith("https://")) cleaned = cleaned.Substring(8);
+        if (cleaned.StartsWith("http://")) cleaned = cleaned.Substring(7);
+        
+        var slashIndex = cleaned.IndexOf('/');
+        if (slashIndex >= 0) cleaned = cleaned.Substring(0, slashIndex);
+
+        if (cleaned.StartsWith("www.")) cleaned = cleaned.Substring(4);
+
+        return new DomainName(cleaned);
     }
 
     public override string ToString() => Value;
