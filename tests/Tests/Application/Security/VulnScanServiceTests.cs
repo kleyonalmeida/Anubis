@@ -114,7 +114,7 @@ public class VulnScanServiceTests : IDisposable
         headerFinding.Should().NotBeNull();
         headerFinding.Severity.Should().Be(Domain.Enums.VulnerabilitySeverity.Medium);
 
-        var adminFinding = findings.FirstOrDefault(f => f.Description.Contains("Exposed: /admin"));
+        var adminFinding = findings.FirstOrDefault(f => f.Description.Contains("Exposed Admin/Sensitive Path: /admin"));
         adminFinding.Should().NotBeNull();
         adminFinding.Severity.Should().Be(Domain.Enums.VulnerabilitySeverity.Medium);
 

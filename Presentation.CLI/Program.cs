@@ -55,7 +55,11 @@ class Program
         {
             PooledConnectionLifetime = TimeSpan.FromMinutes(2),
             AllowAutoRedirect = false, // VulnScan needs manual redirect handling for OpenRedirect checks
-            AutomaticDecompression = DecompressionMethods.All
+            AutomaticDecompression = DecompressionMethods.All,
+            SslOptions = new System.Net.Security.SslClientAuthenticationOptions
+            {
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
+            }
         });
 
         services.AddHttpClient("NvdClient").ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler

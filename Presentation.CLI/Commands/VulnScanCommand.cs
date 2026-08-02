@@ -33,7 +33,7 @@ public static class VulnScanCommand
             {
                 await foreach (var finding in vulnScanService.ScanAsync(domain, cts.Token))
                 {
-                    AnubisConsole.PrintVulnerability(finding.Description, finding.Severity);
+                    AnubisConsole.PrintVulnerability($"{finding.Description}\n    Target Endpoint: {finding.TargetUrl}\n", finding.Severity);
                     findingsCount++;
                 }
 

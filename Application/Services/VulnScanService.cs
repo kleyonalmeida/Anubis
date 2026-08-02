@@ -131,7 +131,7 @@ public class VulnScanService : IVulnScanService
             
             if (response.StatusCode == 200 || response.StatusCode == 401 || response.StatusCode == 403)
             {
-                await writer.WriteAsync(new VulnerabilityFinding(VulnerabilitySeverity.Medium, $"Exposed: {path}", url), ct);
+                await writer.WriteAsync(new VulnerabilityFinding(VulnerabilitySeverity.Medium, $"Exposed Admin/Sensitive Path: {path} (HTTP {response.StatusCode})", url), ct);
             }
         }
     }
